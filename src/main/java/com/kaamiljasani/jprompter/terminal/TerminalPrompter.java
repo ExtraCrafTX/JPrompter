@@ -17,6 +17,24 @@ public class TerminalPrompter implements Prompter {
     public static final int LIST_SIZE = 7;
     public static final int SCROLL_PADDING = 1;
 
+    public static final String[] SPINNER = {
+        "[    ]",
+        "[=   ]",
+        "[==  ]",
+        "[=== ]",
+        "[ ===]",
+        "[  ==]",
+        "[   =]",
+        "[    ]",
+        "[   =]",
+        "[  ==]",
+        "[ ===]",
+        "[=== ]",
+        "[==  ]",
+        "[=   ]"
+    };
+    public static final int INTERVAL = 50;
+
     private static TerminalPrompter instance;
 
     private Terminal terminal;
@@ -92,14 +110,17 @@ public class TerminalPrompter implements Prompter {
         }
     }
 
+    @Override
     public String prompt(String prompt){
         return prompt(prompt, null, s->null);
     }
 
+    @Override
     public String prompt(String prompt, Function<String, String> validator){
         return prompt(prompt, null, validator);
     }
 
+    @Override
     public String prompt(String prompt, String def, Function<String, String> validator){
         bold(); white();
         println(prompt);
@@ -128,10 +149,12 @@ public class TerminalPrompter implements Prompter {
         return line;
     }
 
+    @Override
     public boolean yesOrNo(String prompt, boolean def){
         return yesOrNo(prompt, def, "Yes", "No");
     }
 
+    @Override
     public boolean yesOrNo(String prompt, boolean def, String yes, String no){
         hideCursor();
         boolean val = def;
@@ -176,7 +199,8 @@ public class TerminalPrompter implements Prompter {
         return val;
     }
 
-    public String promptSemVer(String prompt) throws Exception{
+    @Override
+    public String promptSemVer(String prompt){
         hideCursor();
         bold(); white();
         println(prompt);
@@ -409,6 +433,7 @@ public class TerminalPrompter implements Prompter {
         return result.toString();
     }
 
+    @Override
     public int promptList(String prompt, boolean required, int def, String... options){
         clearLine(); hideCursor(); bold(); white();
         println(prompt);
@@ -434,6 +459,7 @@ public class TerminalPrompter implements Prompter {
         return val;
     }
 
+    @Override
     public int promptList(String prompt, boolean required, int def, Object... options){
         String[] stringOptions = new String[options.length];
         for(int i = 0; i < options.length; i++){
@@ -442,10 +468,11 @@ public class TerminalPrompter implements Prompter {
         return promptList(prompt, required, def, stringOptions);
     }
 
-    public TerminalSpinner startSpinner(String text, int interval, String... frames){
+    @Override
+    public TerminalSpinner startSpinner(String text){
         if (spinner != null)
             throw new IllegalStateException("Spinner already running");
-        spinner = new TerminalSpinner(text, interval, frames);
+        spinner = new TerminalSpinner(text, INTERVAL, SPINNER);
         spinner.show();
         return spinner;
     }
