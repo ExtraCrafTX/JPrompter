@@ -12,6 +12,9 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.jline:jline:3.13.3'
+    implementation 'org.fusesource.jansi:jansi:1.18'
+    
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }
